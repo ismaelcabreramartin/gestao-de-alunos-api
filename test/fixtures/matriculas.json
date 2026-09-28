@@ -1,0 +1,44 @@
+[
+    {
+        "testTitle": "Validar que um aluno Yann Gonzalez que acaba de ser cadastrado por ser matriculado em uma nova disciplina e entrega o trabalho",
+        "dadosAluno": {
+            "nome": "Yann Gonzalez",
+            "email": "john.doe.123456@example.com",
+            "matricula": "123456",
+            "senha": "senha123456"
+        },
+        "dadosDisciplina": {
+            "nome": "Automação de APIs REST",
+            "codigo": "MAT-301",
+            "cargaHoraria": 60
+        },
+        "dadosTrabalho": {
+            "disciplinaId": null,
+            "titulo": "Entregar Código Cadastro Aluno, Disciiplina e trabalho",
+            "descricao": "Vale Nota a entrega deste trabalho seguindo o padrão DDT"
+        },
+        "statusCodeEsperadoCriarDado": 201,
+        "statusCodeEsperadoDeletarDado": 204
+    },
+    {
+        "testTitle": "Validar que um aluno Rafael Ortega que acaba de ser cadastrado por ser matriculado em uma nova disciplina e entrega o trabalho",
+        "dadosAluno": {
+            "nome": "Rafael Ortega",
+            "email": "Rafael Ortega.123456@example.com",
+            "matricula": "123456",
+            "senha": "senha123456"
+        },
+        "dadosDisciplina": {
+            "nome": "Automação de APIs REST",
+            "codigo": "MAT-301",
+            "cargaHoraria": 60
+        },
+        "dadosTrabalho": {
+            "disciplinaId": null,
+            "titulo": "Entregar Código Cadastro Aluno, Disciiplina e trabalho",
+            "descricao": "Vale Nota a entrega deste trabalho seguindo o padrão DDT"
+        },
+        "statusCodeEsperadoCriarDado": 201,
+        "statusCodeEsperadoDeletarDado": 204
+    }
+]

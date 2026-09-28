@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "testRunner": "mocha",
+  "mochaOptions": {
+    "spec": ["test/**/*.test.js"]
+  },
+  "timeoutMS": 15000,
+  "coverageAnalysis": "perTest",
+  "mutate": [
+    "src/services/auth.service.js",
+    "src/controllers/auth.controller.js",
+    "src/middlewares/errorHandler.js",
+    "src/utils/ApiError.js",
+    "src/utils/asyncHandler.js"
+  ],
+  "reporters": ["clear-text", "progress", "html"],
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": 0
+  }
+}
