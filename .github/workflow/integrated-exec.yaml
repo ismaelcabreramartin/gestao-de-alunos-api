@@ -1,0 +1,77 @@
+# CI - gestao-de-alunos-api
+# Sobe a API, roda a suíte de testes (Mocha/Supertest) e,
+# se tudo passar, executa o passo de deploy (simulado).
+
+name: 'CI - Testes e Deploy'
+
+# Gatilhos:
+#   workflow_dispatch = botão de execução manual
+#   push             = a cada push nas branches abaixo
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  # ---------------------------------------------------------------
+  # Job 1: sobe a API e roda os testes
+  # ---------------------------------------------------------------
+  testes:
+    runs-on: ubuntu-latest
+
+    # Variáveis de ambiente disponíveis para TODOS os steps deste job.
+    # No CI não existe o arquivo .env (ele é gitignored), então os
+    # valores que a suíte lê de process.env são definidos aqui.
+    # (admin do seed: admin@escola.com / admin123)
+    env:
+      BASE_URL: http://localhost:3000
+      ADMIN_USER: admin@escola.com
+      ADMIN_PASSWORD: admin123
+
+    steps:
+      # Clona o repositório
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # Instala o Node (versão fixa, não "latest", para builds previsíveis)
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+
+      # Instala as dependências a partir do package-lock.json
+      - name: Instalar dependências
+        run: npm ci
+
+      # Sobe a API em segundo plano, espera a porta responder e
+      # só então roda os testes. Sem essa espera, os testes de
+      # integração falham com "conexão recusada" (a API ainda não
+      # está de pé). Tudo no mesmo step para manter o processo vivo.
+      - name: Subir API e executar testes
+        run: |
+          npm start &
+          echo "Aguardando a API subir em ${BASE_URL}..."
+          for i in $(seq 1 30); do
+            if curl -s "${BASE_URL}/" > /dev/null; then
+              echo "API no ar!"
+              break
+            fi
+            echo "Tentativa $i - ainda não respondeu, aguardando 1s..."
+            sleep 1
+          done
+          npm test
+
+  # ---------------------------------------------------------------
+  # Job 2: deploy (simulado) - só roda se os testes passarem
+  # ---------------------------------------------------------------
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [testes]
+
+    steps:
+      - name: Simulação de Deploy
+        run: echo 'Testes passaram. Deploy sendo realizado...'
