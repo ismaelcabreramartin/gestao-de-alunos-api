@@ -1,4 +1,4 @@
-# CI - gestao-de-alunos-api
+# CI - gestao-de-alunos-api:
 # Sobe a API, roda a suíte de testes (Mocha/Supertest) e,
 # se tudo passar, executa o passo de deploy (simulado).
 
