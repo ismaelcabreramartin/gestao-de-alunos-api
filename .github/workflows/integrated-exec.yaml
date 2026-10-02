@@ -22,14 +22,11 @@ jobs:
   testes:
     runs-on: ubuntu-latest
 
-    # Variáveis de ambiente disponíveis para TODOS os steps deste job.
-    # No CI não existe o arquivo .env (ele é gitignored), então os
-    # valores que a suíte lê de process.env são definidos aqui.
-    # (admin do seed: admin@escola.com / admin123)
+    # Só o BASE_URL fica aqui em texto puro: URL/porta local
+    # não são dados sensíveis. As credenciais NÃO ficam aqui —
+    # vêm dos Secrets, no step de testes abaixo.
     env:
       BASE_URL: http://localhost:3000
-      ADMIN_USER: admin@escola.com
-      ADMIN_PASSWORD: admin123
 
     steps:
       # Clona o repositório
@@ -51,6 +48,10 @@ jobs:
       # só então roda os testes. Sem essa espera, os testes de
       # integração falham com "conexão recusada" (a API ainda não
       # está de pé). Tudo no mesmo step para manter o processo vivo.
+      #
+      # As credenciais vêm dos Secrets do GitHub (mascaradas nos logs).
+      # IMPORTANTE: os nomes ADMIN_USER / ADMIN_PASSWORD têm que ser
+      # exatamente os que o código lê em process.env.
       - name: Subir API e executar testes
         run: |
           npm start &
@@ -64,6 +65,10 @@ jobs:
             sleep 1
           done
           npm test
+        env:
+          BASE_URL: http://localhost:3000
+          ADMIN_USER: ${{ secrets.ADMIN_USER }}         # e-mail do admin (mascarado)
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}  # senha do admin (mascarada)
 
   # ---------------------------------------------------------------
   # Job 2: deploy (simulado) - só roda se os testes passarem
