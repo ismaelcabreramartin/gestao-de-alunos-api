@@ -68,7 +68,7 @@ jobs:
         env:
           BASE_URL: http://localhost:3000
           ADMIN_USER: ${{ secrets.ADMIN_USER }}         # e-mail do admin (mascarado)
-          ADMIN_SENHA: ${{ secrets.ADMIN_PASSWORD }}  # senha do admin (mascarada)
+          ADMIN_SENHA: ${{ secrets.ADMIN_SENHA }}  # senha do admin (mascarada)
 
   # ---------------------------------------------------------------
   # Job 2: deploy (simulado) - só roda se os testes passarem
